@@ -1,22 +1,10 @@
-import { DataSource } from 'typeorm';
 import { Student } from '../entities/student.entity';
 import { Teacher } from '../entities/teacher.entity';
-import { StudentTeacher } from '../entities/student-teacher.entity';
 import { config } from 'dotenv';
+import AppDataSource from '../data-source';
 
 // Load environment variables
 config();
-
-const AppDataSource = new DataSource({
-  type: 'mysql',
-  host: process.env.MYSQL_HOST,
-  port: parseInt(process.env.MYSQL_PORT, 10),
-  username: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
-  entities: [Student, Teacher, StudentTeacher],
-  synchronize: true,
-});
 
 async function seed() {
   if (process.env.NODE_ENV !== 'development') return;
