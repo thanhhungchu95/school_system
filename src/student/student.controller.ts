@@ -3,6 +3,7 @@ import { StudentService } from './student.service';
 import { ResponseHelper } from 'src/common/helpers/response_helper';
 import { SuspendRequest as SuspendStudentRequest } from './dtos/suspend-request.dto';
 import { Response } from 'express';
+import { RemoveStudentRequestDto } from './dtos/remove-student-request.dto';
 
 @Controller('students')
 export class StudentController {
@@ -20,6 +21,20 @@ export class StudentController {
         }
 
         let result = await this.studentService.suspend(request.student);
+        if (result.isSuccess) {
+            return ResponseHelper.successWithStatus(res, HttpStatus.NO_CONTENT);
+        } else {
+            return ResponseHelper.error(res, result.message);
+        }
+    }
+
+    @Post('remove')
+    async removeStudent(@Body() request: RemoveStudentRequestDto, @Res() res: Response) {
+        if (~~request?.email?.length === 0) {
+            return ResponseHelper.error(res, 'Parameter is not valid');
+        }
+
+        let result = await this.studentService.removeStudent(request.email);
         if (result.isSuccess) {
             return ResponseHelper.successWithStatus(res, HttpStatus.NO_CONTENT);
         } else {

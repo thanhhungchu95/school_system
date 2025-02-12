@@ -36,4 +36,19 @@ export class StudentService {
 
         return new SuccessResponseDto();
     }
+
+    async removeStudent(studentEmail: string): Promise<BaseResponseDto> {
+        try {
+            let student = await this.studentRepository.findOneBy({ email: studentEmail });
+            if (!student) {
+                throw new Error('Student does not existed');
+            }
+
+            await this.studentRepository.delete(student.id);
+        } catch (error) {
+            return new ErrorResponseDto(error.message);
+        }
+
+        return new SuccessResponseDto();
+    }
 }
