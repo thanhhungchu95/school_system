@@ -29,6 +29,7 @@ services:
       MYSQL_USERNAME: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+      NODE_ENV: production
 
 volumes:
   school_system_data:
