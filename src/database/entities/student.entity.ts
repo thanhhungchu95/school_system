@@ -15,6 +15,9 @@ export class Student {
   @Column({ type: 'date', nullable: true })
   birthday: Date;
 
-  @OneToMany(() => StudentTeacher, (studentTeacher) => studentTeacher.student)
+  @Column({ default: false })
+  isSuspend: boolean
+
+  @OneToMany(() => StudentTeacher, (studentTeacher) => studentTeacher.student, { cascade: true })
   studentTeachers: StudentTeacher[];
 }

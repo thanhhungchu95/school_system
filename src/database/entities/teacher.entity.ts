@@ -12,6 +12,6 @@ export class Teacher {
   @Column()
   name: string;
 
-  @OneToMany(() => StudentTeacher, (studentTeacher) => studentTeacher.teacher)
+  @OneToMany(() => StudentTeacher, (studentTeacher) => studentTeacher.teacher, { cascade: true })
   studentTeachers: StudentTeacher[];
 }
