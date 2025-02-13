@@ -1,7 +1,7 @@
+import { AppDataSource } from '../data-source';
 import { Student } from '../entities/student.entity';
 import { Teacher } from '../entities/teacher.entity';
 import { config } from 'dotenv';
-import AppDataSource from '../data-source';
 
 // Load environment variables
 config();

@@ -18,6 +18,10 @@ export class Student {
   @Column({ default: false })
   isSuspend: boolean
 
-  @OneToMany(() => StudentTeacher, (studentTeacher) => studentTeacher.student, { cascade: true })
+  @OneToMany(() => StudentTeacher, (studentTeacher) => studentTeacher.student, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    orphanedRowAction: 'delete',
+  })
   studentTeachers: StudentTeacher[];
 }

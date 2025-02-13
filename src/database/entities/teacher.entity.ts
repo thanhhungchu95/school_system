@@ -12,6 +12,10 @@ export class Teacher {
   @Column()
   name: string;
 
-  @OneToMany(() => StudentTeacher, (studentTeacher) => studentTeacher.teacher, { cascade: true })
+  @OneToMany(() => StudentTeacher, (studentTeacher) => studentTeacher.teacher, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    orphanedRowAction: 'delete',
+  })
   studentTeachers: StudentTeacher[];
 }

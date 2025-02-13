@@ -7,11 +7,11 @@ export class StudentTeacher {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Student, (student) => student.studentTeachers, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Student, (student) => student.studentTeachers)
   @JoinColumn({ name: 'student_id' })
   student: Student;
 
-  @ManyToOne(() => Teacher, (teacher) => teacher.studentTeachers, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Teacher, (teacher) => teacher.studentTeachers)
   @JoinColumn({ name: 'teacher_id' })
   teacher: Teacher;
 }
