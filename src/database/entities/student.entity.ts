@@ -19,8 +19,8 @@ export class Student {
   isSuspend: boolean
 
   @OneToMany(() => StudentTeacher, (studentTeacher) => studentTeacher.student, {
+    cascade: ["insert", "update"],
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
     orphanedRowAction: 'delete',
   })
   studentTeachers: StudentTeacher[];

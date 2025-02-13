@@ -4,6 +4,9 @@ services:
   school_system_db:
     image: mysql:8
     container_name: school_system_db
+    hostname: school_system_db
+    env_file:
+      - .env.production.local
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -11,25 +14,50 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_PORT: ${MYSQL_PORT}
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h${MYSQL_HOST} -uroot -p${MYSQL_ROOT_PASSWORD}']
+      interval: 10s
+      timeout: 5s
+      retries: 3
     ports:
       - ${MYSQL_PORT}:3306
     volumes:
       - school_system_data:/var/lib/mysql
+    networks:
+      school_system_network:
+        aliases:
+          - school_system_db
 
   school_system_webapi:
     build: .
     container_name: school_system_webapi
+    hostname: school_system_webapi
+    env_file:
+      - .env.production.local
     ports:
       - 8080:${SCHOOL_SYSTEM_PORT}
     depends_on:
+      school_system_db:
+        condition: service_healthy
+    links:
       - school_system_db
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_PORT: ${MYSQL_PORT}
-      MYSQL_USERNAME: ${MYSQL_USER}
+      MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       NODE_ENV: production
+      SCHOOL_SYSTEM_PORT: ${SCHOOL_SYSTEM_PORT}
+    networks:
+      school_system_network:
+        aliases:
+          - school_system_webapi
 
 volumes:
   school_system_data:
+
+networks:
+  school_system_network:
+    name: school_system_network

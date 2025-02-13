@@ -13,8 +13,8 @@ export class Teacher {
   name: string;
 
   @OneToMany(() => StudentTeacher, (studentTeacher) => studentTeacher.teacher, {
+    cascade: ["insert", "update"],
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
     orphanedRowAction: 'delete',
   })
   studentTeachers: StudentTeacher[];

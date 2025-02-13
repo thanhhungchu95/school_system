@@ -24,11 +24,13 @@ FROM node AS server
 ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=server-prod /app/node_modules /app/node_modules
-COPY --from=server-builder /app/.env /app
 COPY --from=server-builder /app/dist /app/dist
+COPY --from=server-builder /app/.env.production.local /app/.env
+COPY --from=server-builder /app/start-application.sh /app/start-application.sh
+RUN chmod +x /app/start-application.sh
 
 # Expose port to access
 EXPOSE 5000
 
 # Run the server
-ENTRYPOINT [ "node", "dist/main.js" ]
+ENTRYPOINT [ "sh", "./start-application.sh" ]
