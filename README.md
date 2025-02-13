@@ -1,92 +1,90 @@
 # School System Application
-This is build on top of NestJS framework, using MySQL database. 
-The application provide an API server to support the various needs of teachers in managing their students and classrooms
 
-# Getting Started
-## How to setup
-### The necessary 
-You will need to install these tool/program to use the software
-- Required 
-  - [Git - Source code management](https://git-scm.com/)
-  - [Docker/Docker Desktop - Container application development](https://www.docker.com/)
-  - A terminal application which suitable for you 
-    - **Windows**: `PowerShell`, `Command Prompt` or `Windows Terminal`
-    - **macOS**: builtin macOS `Terminal` or `iTerm`
-    - **Linux**: `Gnome Terminal`, `Konsole`, `Xfce Terminal` or `Kitty`
-  - An API Client tool of your choice
-    - [Postman](https://www.postman.com/)
-    - [Insomnia](https://insomnia.rest/)
-    - [curl](https://curl.se/)
-- Optional (use for Developement only)
-  - [Node.JS - Cross platform, open source JavaScript runtime environment](https://nodejs.org/en)
-  - [VSCode - Code editing/IDE](https://code.visualstudio.com/)
-  - [DBeaver - Free universal Database Tool](https://dbeaver.io/)
+## Overview
+The **School System Application** is built on the **NestJS** framework with a **MySQL** database. It provides an API server to support teachers in managing students and classrooms efficiently.
 
-### Before start
-Firstly, you need to get the source code: 
-```bash
-git clone https://github.com/thanhhungchu95/school_system.git
-cd school_system
-```
+## Features
+- User authentication and role management
+- Student and teacher management
+- Class scheduling and enrollment
+- Database migration and seeding support
+- RESTful API for external integrations
 
-> Ensure that you are in **school_system** project folder 
+## Getting Started
+### Prerequisites
+Ensure you have the following tools installed:
 
-### Build the development environment
+#### Required:
+- [Git](https://git-scm.com/) - Source code management
+- [Docker/Docker Desktop](https://www.docker.com/) - Containerized environment
+- A terminal application of your choice:
+  - **Windows**: PowerShell, Command Prompt, or Windows Terminal
+  - **macOS**: Terminal or iTerm
+  - **Linux**: Gnome Terminal, Konsole, Xfce Terminal, or Kitty
+- API client tool:
+  - [Postman](https://www.postman.com/)
+  - [Insomnia](https://insomnia.rest/)
+  - [curl](https://curl.se/)
 
-Copy the environment variable config file: 
-```bash
-cp .env.example .env
-```
-Then you can modify the necessary environment variable inside .env file
+#### Optional (for development only):
+- [Node.js](https://nodejs.org/en) - JavaScript runtime
+- [VS Code](https://code.visualstudio.com/) - Code editor
+- [DBeaver](https://dbeaver.io/) - Database management tool
 
-Install necessary packages: 
-```bash
-npm install -g yarn @nestjs/cli             # Use yarn to maintenance nodejs package
-yarn install                                # Install the necessary package
-```
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/thanhhungchu95/school_system.git
+   cd school_system
+   ```
+2. Copy the environment configuration file:
+   ```bash
+   cp .env.example .env
+   ```
+3. Install dependencies:
+   ```bash
+   npm install -g yarn @nestjs/cli
+   yarn install
+   ```
+4. Start the MySQL database:
+   ```bash
+   docker compose --env-file .env up --detach school_system_db
+   ```
+5. Verify the database is running (replace `rootpass` with `$MYSQL_ROOT_PASSWORD` from `.env`):
+   ```bash
+   docker exec -it school_system_db sh -c "mysql -uroot -prootpass -e 'SELECT 1;'"
+   ```
+6. Run migrations and seed initial data:
+   ```bash
+   yarn migrate:run:dev
+   yarn seed:dev
+   ```
+7. Start the API server:
+   ```bash
+   yarn start:dev
+   ```
+   The API server will be available at: [http://localhost:5000/](http://localhost:5000/) (or your `$SCHOOL_SYSTEM_PORT` value).
 
-Run mysql database server
-```bash
-docker compose --env-file .env up --detach school_system_db
-```
+### Running in Production
+1. Copy the production environment file:
+   ```bash
+   cp .env.production.example .env.production.local
+   ```
+2. Start the application:
+   ```bash
+   docker compose --env-file .env.production.local up --detach --build
+   ```
+3. Database credentials (update if modified in `.env.production.local`):
+   - **Host**: localhost
+   - **Port**: 3306
+   - **Database**: schooldb
+   - **User**: schooluser
+   - **Password**: P@ssw0rd
+4. (Optional) Initialize sample data using `init_data.sql`.
+5. The production API server will be available at: [http://localhost:8080/](http://localhost:8080/).
 
-Verify the database is up and running (Replace `rootpass` with your **$MYSQL_ROOT_PASSWORD** variable in .env file )
-```bash
-docker exec -it school_system_db sh -c "mysql -uroot -prootpass -e 'SELECT 1;'"
-```
+## Contributing
+We welcome contributions! Feel free to submit pull requests and report issues.
 
-Run the migration and seed the initial data
-```bash
-yarn migrate:run:dev
-yarn seed:dev
-```
-
-Run the API server
-```bash
-yarn start:dev
-```
-Now you can start to call API server at: [http://localhost:5000/](http://localhost:5000/), replace the port with your **$SCHOOL_SYSTEM_PORT** variable in `.env` file
-
-### Build the production server
-Copy the environment variable config file: 
-```bash
-cp .env.production.example .env.production.local
-```
-Then you can modify the necessary environment variable inside .env file
-
-Run mysql database server and webapi server
-```bash
-docker compose --env-file .env.production.local up --detach --build
-```
-
-Production build will not come with initial data for now, you need to use **DBeaver** or other database tool.  
-Then you can connect to the database with these credential (use your variable if you have changed the content of `.env.production.local` file before build the server)
-- **Host**: localhost
-- **Port**: 3306
-- **Database**: schooldb
-- **User**: schooluser
-- **Password**: P@ssw0rd
-
-Then you can run the sample script in source project folder `init_data.sql`
-
-Now you can start to call API server at: [http://localhost:8080/](http://localhost:8080/)
+## License
+This project is licensed under the MIT License.
